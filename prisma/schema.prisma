@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -33,7 +33,7 @@ model Pet {
   description   String
   image         String      @db.VarChar(1000)
   fosterId      String?
-  foster        Foster?     @relation(fields: [fosterId], references: [id], map: "Pet_fosterId_fkey")
+  foster        Foster?     @relation(fields: [fosterId], references: [id], map: "Pet_fosterId_fkey_unique")
   questions     Question[]
   adoptforms    AdoptForm[]
 
@@ -47,7 +47,7 @@ model Question {
   pet     Pet      @relation(fields: [petId], references: [id], map: "Question_petId_fkey", onDelete: Cascade)
   answers Answer[]
 
-  @@index([petId], map: "Question_petId_fkey")
+  // @@index([petId], map: "Question_petId_fkey")
 }
 
 enum Adopt_Status {
@@ -66,7 +66,7 @@ model AdoptForm {
   pet      Pet          @relation(fields: [petId], references: [id], map: "AdoptForm_petId_fkey", onDelete: Cascade)
   answers  Answer[]
 
-  @@index([petId], map: "AdoptForm_petId_fkey")
+  // @@index([petId], map: "AdoptForm_petId_fkey")
 }
 
 model Answer {
@@ -77,5 +77,5 @@ model Answer {
   questionId  Int
   question    Question  @relation(fields: [questionId], references: [id], map: "Answer_questionId_fkey", onDelete: Cascade)
 
-  @@index([questionId], map: "Answer_questionId_fkey")
+  // @@index([questionId], map: "Answer_questionId_fkey")
 }
