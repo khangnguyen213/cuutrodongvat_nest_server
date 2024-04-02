@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Foster {
+  id       String @id @default(uuid())
+  name     String
+  phone    String
+  email    String @unique
+  address  String
+  avatar   String @db.VarChar(1000)
+  password String
+  pets     Pet[]
+}
+
+model Pet {
+  id            String      @id @default(uuid())
+  name          String
+  type          String
+  species       String
+  color         String
+  gender        Int
+  age           String
+  sterilization Boolean
+  vacine        Boolean
+  date          DateTime    @default(now())
+  adopted       Boolean
+  description   String
+  image         String      @db.VarChar(1000)
+  fosterId      String?
+  foster        Foster?     @relation(fields: [fosterId], references: [id], map: "Pet_fosterId_fkey")
+  questions     Question[]
+  adoptforms    AdoptForm[]
+
+  @@index([fosterId], map: "Pet_fosterId_fkey")
+}
+
+model Question {
+  id      Int      @id @default(autoincrement())
+  content String
+  petId   String
+  pet     Pet      @relation(fields: [petId], references: [id], map: "Question_petId_fkey", onDelete: Cascade)
+  answers Answer[]
+
+  @@index([petId], map: "Question_petId_fkey")
+}
+
+enum Adopt_Status {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model AdoptForm {
+  id       Int          @id @default(autoincrement())
+  name     String
+  contact1 String
+  contact2 String?
+  status   Adopt_Status
+  petId    String
+  pet      Pet          @relation(fields: [petId], references: [id], map: "AdoptForm_petId_fkey", onDelete: Cascade)
+  answers  Answer[]
+
+  @@index([petId], map: "AdoptForm_petId_fkey")
+}
+
+model Answer {
+  id          Int       @id @default(autoincrement())
+  content     String
+  adoptFormId Int
+  adoptForm   AdoptForm @relation(fields: [adoptFormId], references: [id], map: "Answer_adoptFormId_fkey", onDelete: Cascade)
+  questionId  Int
+  question    Question  @relation(fields: [questionId], references: [id], map: "Answer_questionId_fkey", onDelete: Cascade)
+
+  @@index([questionId], map: "Answer_questionId_fkey")
+}
