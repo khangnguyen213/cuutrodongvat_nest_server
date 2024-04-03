@@ -90,6 +90,7 @@ export class PetService {
           questions: true,
         },
       });
+      console.log(updatedPet);
       if (!updatedPet) throw { message: 'Pet not found' };
       return {
         data: updatedPet,
