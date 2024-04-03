@@ -91,13 +91,11 @@ export class PetService {
           questions: true,
         },
       });
-      console.log(updatedPet);
       if (!updatedPet) throw { message: 'Pet not found' };
       return {
         data: updatedPet,
       };
     } catch (error) {
-      console.log(error);
       await this.prisma.question.createMany({
         data: oldQuestions,
       });
