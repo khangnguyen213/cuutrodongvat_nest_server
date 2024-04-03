@@ -64,6 +64,7 @@ export class PetService {
   }
 
   async update(id: string, data: Prisma.PetUpdateInput) {
+    console.log('Update pet');
     if (data.adopted === false) {
       const owner = await this.prisma.adoptForm.findFirst({
         where: { petId: id, status: Adopt_Status.ACCEPTED },
@@ -96,6 +97,7 @@ export class PetService {
         data: updatedPet,
       };
     } catch (error) {
+      console.log(error);
       await this.prisma.question.createMany({
         data: oldQuestions,
       });
