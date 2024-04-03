@@ -86,6 +86,9 @@ export class PetService {
       const updatedPet = await this.prisma.pet.update({
         where: { id },
         data,
+        include: {
+          questions: true,
+        },
       });
       if (!updatedPet) throw { message: 'Pet not found' };
       return {
