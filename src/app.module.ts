@@ -9,7 +9,14 @@ import { AdoptModule } from './modules/adopt/adopt.module';
 import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
-  imports: [PrismaModule, PetModule, FosterModule, UploadModule, AdoptModule, AuthModule],
+  imports: [
+    PrismaModule,
+    PetModule,
+    FosterModule,
+    UploadModule,
+    AdoptModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

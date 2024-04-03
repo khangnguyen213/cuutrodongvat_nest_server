@@ -74,7 +74,9 @@ export class FosterController {
         };
 
       return res.status(200).json({
-        data: sign({ id: data.id }, process.env.JWT_KEY, { expiresIn: '999y' }),
+        data: sign({ id: data.id }, process.env.JWT_KEY, {
+          expiresIn: '999y',
+        }),
       });
     } catch (error) {
       return res.status(500).json({
